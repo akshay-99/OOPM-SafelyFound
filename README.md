@@ -48,7 +48,14 @@
 
 ------------------------------------------
 
+### Setting Up
 
+`pip install -r requirements.txt`
+
+- Insert database credentials in [lseen.py](./multiple_input/lseen.py) and [lastseen.py](./lastseen.py)
+- Set environment variables **CAMERA_LOCATION**, **MAIN_SERVER_IP**
+
+--------------------------------------------------
 
 
 ### Note
