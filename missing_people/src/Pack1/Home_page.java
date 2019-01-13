@@ -54,12 +54,12 @@ public class Home_page extends JFrame {
 	private JTextField textField;
 	private JTable table;
 	private JPanel panel_9;
-	//public static String dbun = "akshay_07cf";
-	public static String dbun = "root";
+	public static String dbun = "akshay_07cf";
+	//public static String dbun = "root";
 	public static String dbps = "@kshayps9";
-	//public static String dbn = "db4free.net";
+	public static String dbn = "db4free.net";
 	//public static String dbn = "192.168.15.151";
-	public static String dbn = "localhost";
+	//public static String dbn = "localhost";
 	/**
 	 * Launch the application.
 	 */
@@ -329,7 +329,8 @@ public class Home_page extends JFrame {
 					//System.out.println(location);
 					/*String lat="19.1720";
 					String lng="72.9564";*/
-					String html = "<!DOCTYPE html>\n" + 
+					String html =
+							"    src=\"https://maps.googleapis.com/maps/api/js?key&callback=initMap\">\n" + "<!DOCTYPE html>\n" + 
 							"<html>\n" + 
 							"  <head>\n" + 
 							"    <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n" + 
