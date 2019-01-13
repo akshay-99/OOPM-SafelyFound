@@ -4,13 +4,15 @@ import time
 import threading
 import facerecogsub
 import json
+import os
+import sys
 
-def wsid():
+def wsid(surl):
     started = False
     t1 = None
     ct = 0
     clientstat = 'new'
-    surl = 'http://192.168.15.151:5000'
+    # surl = '' # address of main server
     clientid = -1
     headers = {'Content-Type': 'application/json', 'accept': 'application/json'}
     while True:
@@ -47,5 +49,7 @@ def wsid():
             started = False
             clientstat = 'stopped'
         time.sleep(2)
-
-wsid()
+if __name__=='__main__':
+    if not os.environ.get('MAIN_SERVER_IP') or not os.environ.get('CAMERA_LOCATION'):
+        sys.exit('Error: Set both environment variables MAIN_SERVER_IP and CAMERA_LOCATION')
+    wsid(os.environ.get('MAIN_SERVER_IP'))

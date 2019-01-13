@@ -16,9 +16,9 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import net.proteanit.sql.DbUtils;
 
 public class Surveillance {
-	//public static String urlc = "https://oopmproj4751.localtunnel.me";
+	
 	public static String urlc = "http://192.168.15.151:5000";
-	//public static String urlc = "http://localhost:5000";
+	
 	public static void startSurveillance() {
 		// TODO Auto-generated method stub
 		try {
@@ -26,7 +26,6 @@ public class Surveillance {
 			HttpResponse<JsonNode> startR = Unirest.post(urlc+"/start")
 			        .header("Content-Type", "application/json")
 			        .header("accept", "application/json")
-			        .body("{\"key\":\"!!MyKey@123eOOPM\"}")
 			        .asJson();
 		} catch (UnirestException e) {
 			e.printStackTrace();
@@ -46,7 +45,6 @@ public class Surveillance {
 			HttpResponse<JsonNode> stopR = Unirest.post(urlc+"/stop")
 			        .header("Content-Type", "application/json")
 			        .header("accept", "application/json")
-			        .body("{\"key\":\"!!MyKey@123eOOPM\"}")
 			        .asJson();
 			Thread.sleep(900);
 		} catch (UnirestException e) {
@@ -62,7 +60,6 @@ public class Surveillance {
 					HttpResponse<JsonNode> stopR1 = Unirest.post(urlc+"/stop")
 					        .header("Content-Type", "application/json")
 					        .header("accept", "application/json")
-					        .body("{\"key\":\"!!MyKey@123eOOPM\"}")
 					        .asJson();
 				} catch (UnirestException e2) {
 					e2.printStackTrace();

@@ -8,7 +8,7 @@ from . import lastseen
 import numpy as nmp
 from importlib import reload
 MOD = 5
-known_people_folder = './knownfaces'
+known_people_folder = 'knownfaces'
 known_face_names=[]
 known_face_encodings=[]
 stop = False
@@ -40,7 +40,7 @@ def dostuff(video_capture, known_face_names, known_face_encodings, ct, mobcam = 
     face_locations = []
     face_encodings = []
     face_names = []
-    
+    location = os.environ.get('CAMERA_LOCATION')
     if mobcam:
         ratio = 0.4
     else:
@@ -48,8 +48,7 @@ def dostuff(video_capture, known_face_names, known_face_encodings, ct, mobcam = 
     ratinv = 1/ratio
     tolerance = 0.5
     while not stop:
-        # Grab a single frame of video
-        # print('running')
+        
         ret, frame = video_capture.read()
         
         if count % MOD == 0:
@@ -63,23 +62,21 @@ def dostuff(video_capture, known_face_names, known_face_encodings, ct, mobcam = 
 
             face_names = []
             for face_encoding in face_encodings:
-                # See if the face is a match for the known face(s)
                 
-                # matches = face_recognition.compare_faces(known_face_encodings, face_encoding, tolerance=tolerance)
                 distances = face_recognition.face_distance(known_face_encodings, face_encoding)
                 matches = list(distances <= tolerance)
                 
                 name = "Unknown"
                 stored = False
-                # If a match was found in known_face_encodings, just use the first one.
+                
                 if True in matches:
                     match_index = (nmp.argmin(distances, axis=0))
                     print(distances)
                     print(known_face_names)
-                    # first_match_index = matches.index(True)
+                    
                     name = known_face_names[match_index]
                     
-                    if lastseen.store(name):
+                    if lastseen.store(name, location):
                         stored = True
                 face_names.append(name)
                 print(name)
@@ -103,12 +100,12 @@ def dostuff(video_capture, known_face_names, known_face_encodings, ct, mobcam = 
                 font = cv2.FONT_HERSHEY_DUPLEX
                 cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
                 if stored and name != 'Unknown':
-                    cv2.imwrite('./finds/'+ '_'.join(name.split())+'-'+'_'.join(str(lastseen.lastseendict[name][-1][0]).split())+'.jpg', frame )
+                    cv2.imwrite(os.path.join('finds','_'.join(name.split())+'-'+'_'.join(str(lastseen.lastseendict[name][-1][0]).split())+'.jpg'), frame )
             if ct == 0:
                 cv2.imshow('Video', frame)
             
             
-        # Hit 'q' on the keyboard to quit!
+        
         if ct == 0:
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
@@ -129,12 +126,12 @@ def main(ct):
     print('db connected')
     mobcam = False
     if mobcam:
-        address = 'http://192.168.43.1:8080/video'
+        address = ''
     else:
         address = 0
     video_capture = cv2.VideoCapture(address)
     dostuff(video_capture, known_face_names, known_face_encodings, ct, mobcam=mobcam)
-    print('hi')
+    
     started = False
     lastseen.closeconnection()
 

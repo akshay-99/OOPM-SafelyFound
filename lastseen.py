@@ -36,15 +36,15 @@ def to_store_or_not(name):
             return False
     return True
 
-def store(name):
+def store(name, location):
     global query
     if to_store_or_not(name):
         print(lastseendict.get(name, []))
         if lastseendict.get(name, None) == None:
-            lastseendict[name] = [(datetime.datetime.now(), 'Mulund')]
+            lastseendict[name] = [(datetime.datetime.now(), location)]
         else:
-            lastseendict[name].append((datetime.datetime.now(), 'Mulund'))
-        query += "INSERT INTO `finds` (`Name`, `Location`, `Time`) VALUES ('"+name+"', 'Mulund', '"+str(lastseendict[name][-1][0])[:-7]+"');"
+            lastseendict[name].append((datetime.datetime.now(), location))
+        query += "INSERT INTO `finds` (`Name`, `Location`, `Time`) VALUES ('"+name+"', '"+location+"', '"+str(lastseendict[name][-1][0])[:-7]+"');"
         
             
         print('stored', lastseendict)
@@ -56,9 +56,9 @@ def openconnection(localdb = True):
     global cursor
     global query
     if localdb:
-        db = MySQLdb.connect("localhost","root","@kshayps9","oopmproj" )
+        db = MySQLdb.connect("","","","" )
     else:
-        db = MySQLdb.connect("db4free.net","akshay_07cf","@kshayps9","oopmproj" )
+        db = MySQLdb.connect("","","","" )
     cursor = db.cursor()
     # cursor.execute("SET time_zone = '+5:30'")
     db.commit()

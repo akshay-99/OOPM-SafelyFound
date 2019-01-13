@@ -2,6 +2,7 @@ import face_recognition
 import cv2
 import time
 import os
+import sys
 import re
 import lseen
 import numpy as nmp
@@ -16,7 +17,9 @@ def dostuff(video_capture, known_face_names, known_face_encodings, ct, mobcam = 
     face_locations = []
     face_encodings = []
     face_names = []
-    
+    location = os.environ.get('CAMERA_LOCATION')
+    if location == None:
+        sys.exit('Set CAMERA_LOCATION environment variable first')
     if mobcam:
         ratio = 0.4
     else:
@@ -24,8 +27,6 @@ def dostuff(video_capture, known_face_names, known_face_encodings, ct, mobcam = 
     ratinv = 1/ratio
     tolerance = 0.5
     while not stop:
-        # Grab a single frame of video
-        # print('running')
         ret, frame = video_capture.read()
         
         if count % MOD == 0:
@@ -39,7 +40,6 @@ def dostuff(video_capture, known_face_names, known_face_encodings, ct, mobcam = 
 
             face_names = []
             for face_encoding in face_encodings:
-                # matches = face_recognition.compare_faces(known_face_encodings, face_encoding, tolerance=tolerance)
                 distances = face_recognition.face_distance(known_face_encodings, face_encoding)
                 matches = list(distances <= tolerance)
                 
@@ -49,10 +49,10 @@ def dostuff(video_capture, known_face_names, known_face_encodings, ct, mobcam = 
                     match_index = (nmp.argmin(distances, axis=0))
                     print(distances)
                     print(known_face_names)
-                    # first_match_index = matches.index(True)
+                
                     name = known_face_names[match_index]
                     
-                    if lseen.store(name):
+                    if lseen.store(name, location):
                         stored = True
                 face_names.append(name)
                 print(name)
@@ -76,12 +76,12 @@ def dostuff(video_capture, known_face_names, known_face_encodings, ct, mobcam = 
                 font = cv2.FONT_HERSHEY_DUPLEX
                 cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
                 if stored and name != 'Unknown':
-                    cv2.imwrite('finds\\'+ '_'.join(name.split())+'-'+'_'.join(str(lseen.lastseendict[name][-1][0]).split())+'.jpg', frame )
+                    cv2.imwrite(os.path.join('finds', '_'.join(name.split())+'-'+'_'.join(str(lseen.lastseendict[name][-1][0]).split())+'.jpg'), frame )
             if ct == 0:
-                cv2.imshow('Video', frame)
+                cv2.imshow('Stream', frame)
             
             
-        # Hit 'q' on the keyboard to quit!
+        
         if ct == 0:
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
@@ -95,8 +95,8 @@ def main(ct, known_face_encodings, known_face_names):
     lseen.openconnection()
     mobcam = False
     if mobcam:
-        # address = 'http://192.168.15.184:8080/video'
-        address = 'http://192.168.15.118:8080/video'
+        
+        address = ''
     else:
         address = 0
     video_capture = cv2.VideoCapture(address)

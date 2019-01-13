@@ -41,15 +41,15 @@ def to_store_or_not(name):
             return False
     return True
 
-def store(name):
+def store(name, location):
     global query
     if to_store_or_not(name):
         print(lastseendict.get(name, []))
         if lastseendict.get(name, None) == None:
-            lastseendict[name] = [(datetime.datetime.now(), 'Matunga')]
+            lastseendict[name] = [(datetime.datetime.now(), location)]
         else:
-            lastseendict[name].append((datetime.datetime.now(), 'Matunga'))
-        query += "INSERT INTO `finds` (`Name`, `Location`, `Time`) VALUES ('"+name+"', 'Matunga', '"+str(lastseendict[name][-1][0])[:-7]+"');"
+            lastseendict[name].append((datetime.datetime.now(), location))
+        query += "INSERT INTO `finds` (`Name`, `Location`, `Time`) VALUES ('"+name+"', '"+location+"', '"+str(lastseendict[name][-1][0])[:-7]+"');"
 
 
         print('stored', lastseendict)
@@ -61,11 +61,11 @@ def openconnection(onLAN = True):
     global cursor
     global query
     if onLAN:
-        db = pymysql.connect("192.168.15.151","root","@kshayps9","oopmproj" )
+        db = pymysql.connect("","","","" )
     else:
-        db = pymysql.connect("db4free.net","akshay_07cf","@kshayps9","oopmproj" )
+        db = pymysql.connect("","","","" )
     cursor = db.cursor()
-    # cursor.execute("SET time_zone = '+5:30'")
+    
     db.commit()
     dbclosed = False
     query = ""

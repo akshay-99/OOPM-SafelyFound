@@ -117,4 +117,6 @@ dmypy.json
 
 *.class
 *.jpg
+*.JPG
 *.classpath
+*.html

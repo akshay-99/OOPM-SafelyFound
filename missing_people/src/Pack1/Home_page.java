@@ -54,12 +54,11 @@ public class Home_page extends JFrame {
 	private JTextField textField;
 	private JTable table;
 	private JPanel panel_9;
-	public static String dbun = "akshay_07cf";
-	//public static String dbun = "root";
-	public static String dbps = "@kshayps9";
-	public static String dbn = "db4free.net";
-	//public static String dbn = "192.168.15.151";
-	//public static String dbn = "localhost";
+	public static String dbun = "";
+	
+	public static String dbps = "";
+	public static String dbn = "";
+	\
 	/**
 	 * Launch the application.
 	 */
