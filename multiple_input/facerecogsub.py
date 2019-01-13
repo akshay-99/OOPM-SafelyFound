@@ -18,8 +18,7 @@ def dostuff(video_capture, known_face_names, known_face_encodings, ct, mobcam = 
     face_encodings = []
     face_names = []
     location = os.environ.get('CAMERA_LOCATION')
-    if location == None:
-        sys.exit('Set CAMERA_LOCATION environment variable first')
+    
     if mobcam:
         ratio = 0.4
     else:
